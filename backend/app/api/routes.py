@@ -1,5 +1,6 @@
 import json
 import os
+from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from ..services.date_calc import get_state_timeline, get_global_timeline
 
@@ -8,6 +9,7 @@ router = APIRouter()
 # Load states data at module level for performance
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "states.json")
 
+@lru_cache(maxsize=1)
 def load_states():
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
